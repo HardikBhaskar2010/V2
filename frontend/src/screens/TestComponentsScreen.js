@@ -308,6 +308,54 @@ const TestComponentsScreen = ({ onNavigate }) => {
           />
         )}
       </div>
+
+      {/* Bottom Navigation Bar */}
+      <div className="fixed bottom-0 left-0 right-0 bg-gray-800 border-t border-gray-700 px-4 py-2 safe-area-pb">
+        <div className="flex justify-around items-center max-w-lg mx-auto">
+          <button
+            onClick={() => handleNavigateToScreen('/components')}
+            className="flex flex-col items-center space-y-1 p-2 text-blue-400"
+          >
+            <Home className="h-5 w-5" />
+            <span className="text-xs font-medium">Components</span>
+          </button>
+          
+          <button
+            onClick={() => handleNavigateToScreen('/generate')}
+            className="flex flex-col items-center space-y-1 p-2 text-gray-400 hover:text-white transition-colors"
+          >
+            <Lightbulb className="h-5 w-5" />
+            <span className="text-xs font-medium">Generate</span>
+          </button>
+          
+          <button
+            onClick={() => handleNavigateToScreen('/library')}
+            className="flex flex-col items-center space-y-1 p-2 text-gray-400 hover:text-white transition-colors"
+          >
+            <BookOpen className="h-5 w-5" />
+            <span className="text-xs font-medium">Library</span>
+          </button>
+          
+          <button
+            onClick={() => handleNavigateToScreen('/preferences')}
+            className="flex flex-col items-center space-y-1 p-2 text-gray-400 hover:text-white transition-colors"
+          >
+            <Settings className="h-5 w-5" />
+            <span className="text-xs font-medium">Settings</span>
+          </button>
+          
+          <button
+            onClick={() => handleNavigateToScreen('/profile')}
+            className="flex flex-col items-center space-y-1 p-2 text-gray-400 hover:text-white transition-colors"
+          >
+            <User className="h-5 w-5" />
+            <span className="text-xs font-medium">Profile</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Bottom padding to account for fixed navigation */}
+      <div className="h-20"></div>
     </div>
   );
 };
