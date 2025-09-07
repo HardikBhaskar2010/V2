@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, ShoppingCart, Check, Zap, Cpu, Eye, Bluetooth } from 'lucide-react';
+import { Plus, ShoppingCart, Check, Zap, Cpu, Eye, Bluetooth, ArrowRight, Home, Settings, Lightbulb, BookOpen, User } from 'lucide-react';
 import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
-const TestComponentsScreen = () => {
+const TestComponentsScreen = ({ onNavigate }) => {
   const [components, setComponents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
