@@ -1,75 +1,42 @@
-import axios from 'axios';
+// Import Firebase and OpenAI services
+import * as firebaseService from './firebaseService';
+import * as openaiService from './openaiService';
 
-const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8001';
-
-// Create axios instance with default config
-const api = axios.create({
-  baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  timeout: 15000, // Increased timeout for AI requests
-});
-
-// Request interceptor
-api.interceptors.request.use(
-  (config) => {
-    // Add auth token if available
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-// Response interceptor
-api.interceptors.response.use(
-  (response) => {
-    return response.data;
-  },
-  (error) => {
-    console.error('API Error:', error.response?.data || error.message);
-    if (error.response?.status === 401) {
-      // Handle unauthorized access
-      localStorage.removeItem('authToken');
-      // Don't redirect for now since we don't have auth
-    }
-    return Promise.reject(error);
-  }
-);
-
+// Create a unified API service that uses Firebase directly
 export const apiService = {
-  // Health check
-  healthCheck: () => api.get('/api/health'),
+  // Health check (always returns healthy since we're client-side)
+  healthCheck: () => Promise.resolve({ status: "healthy", message: "Frontend services are running" }),
 
-  // Components API
-  getComponents: () => api.get('/api/components'),
-  getComponent: (id) => api.get(`/api/components/${id}`),
-  createComponent: (component) => api.post('/api/components', component),
-  deleteComponent: (id) => api.delete(`/api/components/${id}`),
-  getComponentsByCategory: (category) => api.get(`/api/components/category/${category}`),
+  // Components API (using Firebase)
+  getComponents: firebaseService.fetchComponents,
+  getComponent: firebaseService.fetchComponentById,
+  createComponent: firebaseService.addComponent,
+  updateComponent: firebaseService.updateComponent,
+  deleteComponent: firebaseService.deleteComponent,
+  getComponentsByCategory: firebaseService.fetchComponentsByCategory,
 
-  // User Preferences API
-  getUserPreferences: () => api.get('/api/preferences'),
-  saveUserPreferences: (preferences) => api.post('/api/preferences', preferences),
+  // User Preferences API (using Firebase)
+  getUserPreferences: () => firebaseService.fetchPreferences(),
+  saveUserPreferences: (preferences) => firebaseService.savePreferences("default_user", preferences),
 
-  // Saved Ideas API
-  getSavedIdeas: () => api.get('/api/ideas'),
-  saveIdea: (idea) => api.post('/api/ideas', idea),
-  updateIdea: (id, idea) => api.put(`/api/ideas/${id}`, idea),
-  deleteIdea: (id) => api.delete(`/api/ideas/${id}`),
-  toggleFavorite: (id, isFavorite) => api.patch(`/api/ideas/${id}/favorite?is_favorite=${isFavorite}`),
-  searchIdeas: (query) => api.get(`/api/ideas/search?query=${encodeURIComponent(query)}`),
+  // Saved Ideas API (using Firebase)
+  getSavedIdeas: firebaseService.fetchIdeas,
+  saveIdea: firebaseService.saveIdea,
+  updateIdea: firebaseService.updateIdea,
+  deleteIdea: firebaseService.deleteIdea,
+  toggleFavorite: (id, isFavorite) => firebaseService.toggleIdeaFavorite(id, isFavorite),
+  searchIdeas: firebaseService.searchIdeas,
 
-  // AI Idea Generation
-  generateIdeas: (request) => api.post('/api/generate-ideas', request),
+  // AI Idea Generation (using OpenAI)
+  generateIdeas: (request) => openaiService.generateProjectIdeas(request),
+  enhanceIdea: openaiService.enhanceProjectIdea,
+  getProjectSuggestions: openaiService.getProjectSuggestions,
 
-  // User Stats
-  getUserStats: () => api.get('/api/stats'),
+  // User Stats (using Firebase)
+  getUserStats: firebaseService.fetchStats,
+
+  // Initialize sample data
+  initializeSampleComponents: firebaseService.initializeSampleComponents
 };
 
 export default apiService;
