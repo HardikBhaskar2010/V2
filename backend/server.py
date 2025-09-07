@@ -139,6 +139,9 @@ MOCK_PREFERENCES = {
     "team_size": "Individual"
 }
 
+# Initialize OpenAI
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 # Pydantic models
 class Component(BaseModel):
     id: Optional[str] = None
