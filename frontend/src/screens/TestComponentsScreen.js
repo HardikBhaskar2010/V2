@@ -121,8 +121,19 @@ const TestComponentsScreen = ({ onNavigate }) => {
       return;
     }
     
-    toast.success(`Proceeding with ${selectedComponents.length} components!`);
-    navigate('/generate'); // Go to AI Idea Generation
+    try {
+      // Save selected components to localStorage for other screens to use
+      localStorage.setItem('selectedComponents', JSON.stringify(selectedComponents));
+      localStorage.setItem('currentStep', 'generate');
+      
+      toast.success(`Proceeding with ${selectedComponents.length} component${selectedComponents.length > 1 ? 's' : ''}!`);
+      
+      // Navigate to generate screen
+      navigate('/generate');
+    } catch (error) {
+      console.error('Navigation error:', error);
+      toast.error('Unable to navigate. Please try again.');
+    }
   };
 
   const handleNavigateToScreen = (screen) => {
