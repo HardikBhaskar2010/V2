@@ -105,6 +105,21 @@ const TestComponentsScreen = ({ onNavigate }) => {
     setShowAddModal(true);
   };
 
+  // Navigation functions
+  const handleContinue = () => {
+    if (selectedComponents.length === 0) {
+      toast.error('Please select at least one component to continue');
+      return;
+    }
+    
+    toast.success(`Proceeding with ${selectedComponents.length} components!`);
+    navigate('/generate'); // Go to AI Idea Generation
+  };
+
+  const handleNavigateToScreen = (screen) => {
+    navigate(screen);
+  };
+
   // Get category color
   const getCategoryColor = (category) => {
     const colors = {
