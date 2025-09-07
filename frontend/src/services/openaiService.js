@@ -239,6 +239,46 @@ Example format:
 
 export async function enhanceProjectIdea(idea) {
   try {
+    // Initialize OpenAI if not already done
+    if (!openai) {
+      initializeOpenAI();
+    }
+
+    // If still no OpenAI client, return enhanced fallback
+    if (!openai) {
+      console.log('🔄 Using fallback enhancement (OpenAI not available)');
+      return {
+        ...idea,
+        implementationSteps: [
+          "1. Gather all required components and tools",
+          "2. Create circuit diagram and plan connections",
+          "3. Set up breadboard and make initial connections",
+          "4. Write and upload basic code to microcontroller",
+          "5. Test individual components and sensors",
+          "6. Integrate all components and test full system",
+          "7. Debug and refine the project",
+          "8. Create enclosure and finalize the project"
+        ],
+        circuitDiagram: "Connect components according to their pin requirements. Use appropriate resistors and ensure proper power supply connections.",
+        codeSnippet: "// Basic Arduino code structure\nvoid setup() {\n  // Initialize pins and sensors\n}\n\nvoid loop() {\n  // Main program logic\n}",
+        troubleshooting: [
+          "Check all connections if project doesn't work",
+          "Verify power supply voltage and current",
+          "Use serial monitor for debugging",
+          "Test components individually if needed"
+        ],
+        learningOutcomes: [
+          "Understanding of electronic circuit design",
+          "Programming microcontrollers",
+          "Sensor integration and data processing",
+          "Problem-solving and debugging skills"
+        ],
+        enhanced: true,
+        enhancedAt: new Date().toISOString(),
+        enhancedBy: "Fallback Enhancer (OpenAI unavailable)"
+      };
+    }
+
     const prompt = `Enhance this project idea with more technical details and implementation steps:
 
 Project: ${idea.title}
