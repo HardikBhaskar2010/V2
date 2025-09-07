@@ -131,11 +131,19 @@ Frontend (React) → Backend (FastAPI) → Firebase/Mock Data
 ## Next Steps for User
 
 ### 1. 🚀 Immediate Use
-- App is ready to use with mock data
-- Can add components through the interface
-- AI idea generation works with provided OpenAI key
+- App is ready to use with all features except AI generation
+- Can add/view components through the interface
+- All API endpoints are functional
 
-### 2. 🔥 Firebase Production Setup (Optional)
+### 2. 🤖 AI Idea Generation Fix
+**Current Issue**: OpenAI API key has exceeded billing quota
+**Solutions**:
+- **Option A**: Add billing credits to your OpenAI account at https://platform.openai.com/account/billing
+- **Option B**: Switch to Emergent LLM Key (no billing required)
+  - Contact support or use integration panel to set up Emergent LLM Key
+  - This provides access to multiple LLM providers without separate billing
+
+### 3. 🔥 Firebase Production Setup (Optional)
 To connect to Firebase in production:
 1. Download service account key from Firebase Console
 2. Save as `/app/backend/firebase-key.json`
