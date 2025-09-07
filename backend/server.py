@@ -23,12 +23,39 @@ app.add_middleware(
 )
 
 # Initialize Firebase Admin
-if not firebase_admin._apps:
-    # Use service account key from environment or default credentials
-    cred = credentials.ApplicationDefault()
-    firebase_admin.initialize_app(cred)
-
-db = firestore.client()
+db = None
+try:
+    if not firebase_admin._apps:
+        # Try different authentication methods
+        try:
+            # Method 1: Application Default Credentials
+            cred = credentials.ApplicationDefault()
+            firebase_admin.initialize_app(cred)
+            db = firestore.client()
+            print("✅ Firebase initialized with Application Default Credentials")
+        except Exception as e:
+            print(f"⚠️  Application Default Credentials failed: {e}")
+            try:
+                # Method 2: Service account key file
+                key_file = os.path.join(os.path.dirname(__file__), 'firebase-key.json')
+                if os.path.exists(key_file):
+                    cred = credentials.Certificate(key_file)
+                    firebase_admin.initialize_app(cred)
+                    db = firestore.client()
+                    print("✅ Firebase initialized with service account key")
+                else:
+                    print("⚠️  No Firebase credentials found, using mock mode")
+                    # We'll create a mock db for development
+                    db = None
+            except Exception as e2:
+                print(f"⚠️  Firebase initialization failed: {e2}")
+                db = None
+    else:
+        db = firestore.client()
+        print("✅ Firebase was already initialized")
+except Exception as e:
+    print(f"⚠️  Firebase setup error: {e}")
+    db = None
 
 # Initialize OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")
