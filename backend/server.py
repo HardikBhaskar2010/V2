@@ -438,27 +438,23 @@ async def generate_ideas(request: IdeaRequest):
 @app.get("/api/preferences")
 async def get_preferences():
     try:
-        # For now, return default preferences or get from a single user document
-        doc_ref = db.collection("preferences").document("default_user")
-        doc = doc_ref.get()
-        if doc.exists:
-            prefs = doc.to_dict()
-            prefs["id"] = doc.id
-            return prefs
+        if db:
+            # For now, return default preferences or get from a single user document
+            doc_ref = db.collection("preferences").document("default_user")
+            doc = doc_ref.get()
+            if doc.exists:
+                prefs = doc.to_dict()
+                prefs["id"] = doc.id
+                return prefs
+            else:
+                # Return default preferences
+                return MOCK_PREFERENCES.copy()
         else:
-            # Return default preferences
-            default_prefs = {
-                "id": "default_user",
-                "skill_level": "Beginner",
-                "selected_themes": [],
-                "interests": [],
-                "dark_mode_enabled": False,
-                "project_duration": "Short-term",
-                "team_size": "Individual"
-            }
-            return default_prefs
+            # Use mock preferences when Firebase is not available
+            return MOCK_PREFERENCES.copy()
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching preferences: {str(e)}")
+        print(f"⚠️  Error fetching preferences: {e}")
+        return MOCK_PREFERENCES.copy()
 
 @app.post("/api/preferences")
 async def save_preferences(preferences: UserPreferences):
