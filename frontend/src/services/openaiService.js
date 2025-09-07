@@ -394,3 +394,6 @@ Provide suggestions as a JSON array with title, description, and requiredCompone
     return [];
   }
 }
+
+// Initialize OpenAI client when module loads
+initializeOpenAI();
