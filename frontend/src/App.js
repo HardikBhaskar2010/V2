@@ -49,8 +49,8 @@ function App() {
           setCurrentScreen('components');
         }
 
-        // Initialize sample components if needed
-        await apiService.initializeSampleComponents();
+        // Skip Firebase initialization for now to avoid hanging
+        console.log("🔧 App initialized in testing mode");
         
       } catch (error) {
         console.error('Error initializing app:', error);
