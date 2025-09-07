@@ -101,7 +101,7 @@ const OnboardingFlow = () => {
 
   const completeOnboarding = () => {
     localStorage.setItem('onboardingCompleted', 'true');
-    navigate('/component-selection');
+    navigate('/components');
   };
 
   const currentData = onboardingData[currentPage];
