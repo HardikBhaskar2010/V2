@@ -105,7 +105,7 @@ function App() {
                 <Route 
                   path="/components" 
                   element={
-                    <ComponentSelectionDashboard 
+                    <TestComponentsScreen 
                       onNavigate={handleScreenChange}
                     />
                   } 
