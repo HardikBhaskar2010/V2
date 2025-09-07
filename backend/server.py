@@ -223,9 +223,15 @@ async def create_component(component: Component):
         
         component_dict["created_at"] = datetime.now().isoformat()
         
-        # Add to Firebase
-        doc_ref = db.collection("components").document(component_dict["id"])
-        doc_ref.set(component_dict)
+        if db:
+            # Add to Firebase
+            doc_ref = db.collection("components").document(component_dict["id"])
+            doc_ref.set(component_dict)
+            print(f"✅ Component {component_dict['name']} added to Firebase")
+        else:
+            # Add to mock data
+            MOCK_COMPONENTS.append(component_dict)
+            print(f"✅ Component {component_dict['name']} added to mock data")
         
         return component_dict
     except Exception as e:
