@@ -8,7 +8,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000,
+  timeout: 15000, // Increased timeout for AI requests
 });
 
 // Request interceptor
@@ -32,10 +32,11 @@ api.interceptors.response.use(
     return response.data;
   },
   (error) => {
+    console.error('API Error:', error.response?.data || error.message);
     if (error.response?.status === 401) {
       // Handle unauthorized access
       localStorage.removeItem('authToken');
-      window.location.href = '/';
+      // Don't redirect for now since we don't have auth
     }
     return Promise.reject(error);
   }
@@ -45,16 +46,18 @@ export const apiService = {
   // Health check
   healthCheck: () => api.get('/api/health'),
 
-  // Components
+  // Components API
   getComponents: () => api.get('/api/components'),
   getComponent: (id) => api.get(`/api/components/${id}`),
+  createComponent: (component) => api.post('/api/components', component),
+  deleteComponent: (id) => api.delete(`/api/components/${id}`),
   getComponentsByCategory: (category) => api.get(`/api/components/category/${category}`),
 
-  // User Preferences
+  // User Preferences API
   getUserPreferences: () => api.get('/api/preferences'),
   saveUserPreferences: (preferences) => api.post('/api/preferences', preferences),
 
-  // Saved Ideas
+  // Saved Ideas API
   getSavedIdeas: () => api.get('/api/ideas'),
   saveIdea: (idea) => api.post('/api/ideas', idea),
   updateIdea: (id, idea) => api.put(`/api/ideas/${id}`, idea),
