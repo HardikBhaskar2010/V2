@@ -269,4 +269,148 @@ const TestComponentsScreen = () => {
   );
 };
 
+// Add Component Modal Component
+const AddComponentModal = ({ onClose, onAdd }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    category: 'Microcontrollers',
+    description: '',
+    price: '',
+    stock: ''
+  });
+
+  const categories = ['Microcontrollers', 'Motors', 'Sensors', 'Display', 'Cables', 'Power', 'Tools'];
+  const icons = [Cpu, Zap, Eye, Zap, Cpu, Zap, Cpu];
+  const colors = [
+    'from-blue-600 to-purple-600',
+    'from-orange-500 to-red-500', 
+    'from-green-500 to-teal-500',
+    'from-pink-500 to-rose-500',
+    'from-gray-500 to-gray-600',
+    'from-yellow-500 to-orange-500',
+    'from-indigo-500 to-blue-600'
+  ];
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    if (!formData.name || !formData.description || !formData.price) {
+      toast.error('Please fill in all required fields');
+      return;
+    }
+
+    const categoryIndex = categories.indexOf(formData.category);
+    const newComponent = {
+      id: `comp_${Date.now()}`,
+      name: formData.name,
+      category: formData.category,
+      description: formData.description,
+      price: parseFloat(formData.price),
+      availability: "Available",
+      icon: icons[categoryIndex] || Cpu,
+      color: colors[categoryIndex] || 'from-blue-600 to-purple-600',
+      stock: parseInt(formData.stock) || 10
+    };
+
+    onAdd(newComponent);
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+      <div className="bg-gray-800 border border-gray-700 rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-bold text-white">Add New Component</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-white transition-colors"
+          >
+            <Plus className="h-6 w-6 rotate-45" />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Component Name *</label>
+            <input
+              type="text"
+              value={formData.name}
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
+              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="e.g., Arduino Nano"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Category</label>
+            <select
+              value={formData.category}
+              onChange={(e) => setFormData({...formData, category: e.target.value})}
+              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              {categories.map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">Description *</label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => setFormData({...formData, description: e.target.value})}
+              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Brief description of the component..."
+              rows="3"
+              required
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Price (₹) *</label>
+              <input
+                type="number"
+                value={formData.price}
+                onChange={(e) => setFormData({...formData, price: e.target.value})}
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="450"
+                min="1"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">Stock</label>
+              <input
+                type="number"
+                value={formData.stock}
+                onChange={(e) => setFormData({...formData, stock: e.target.value})}
+                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="10"
+                min="0"
+              />
+            </div>
+          </div>
+
+          <div className="flex space-x-3 pt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 py-2 px-4 bg-gray-700 hover:bg-gray-600 text-gray-300 rounded-lg transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="flex-1 py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+            >
+              Add Component
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
 export default TestComponentsScreen;
