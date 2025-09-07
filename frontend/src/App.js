@@ -9,6 +9,7 @@ import { UserProvider } from './contexts/UserContext';
 
 // Screens
 import OnboardingFlow from './screens/OnboardingFlow';
+import TestComponentsScreen from './screens/TestComponentsScreen';
 import ComponentSelectionDashboard from './screens/ComponentSelectionDashboard';
 import ComponentDatabaseBrowser from './screens/ComponentDatabaseBrowser';
 import ThemeAndSkillSelection from './screens/ThemeAndSkillSelection';
