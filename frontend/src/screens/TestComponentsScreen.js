@@ -9,7 +9,7 @@ const TestComponentsScreen = () => {
   const [selectedComponents, setSelectedComponents] = useState([]);
   const [showAddModal, setShowAddModal] = useState(false);
 
-  // Sample components data
+  // Enhanced components data with icons and better mobile design
   const sampleComponents = [
     {
       id: "comp_1",
@@ -17,7 +17,10 @@ const TestComponentsScreen = () => {
       category: "Microcontrollers",
       description: "Popular microcontroller board based on ATmega328P",
       price: 450.0,
-      availability: "Available"
+      availability: "Available",
+      icon: Cpu,
+      color: "from-blue-600 to-purple-600",
+      stock: 15
     },
     {
       id: "comp_2", 
@@ -25,7 +28,10 @@ const TestComponentsScreen = () => {
       category: "Motors",
       description: "Micro servo motor for robotics projects",
       price: 150.0,
-      availability: "Available"
+      availability: "Available",
+      icon: Zap,
+      color: "from-orange-500 to-red-500",
+      stock: 8
     },
     {
       id: "comp_3",
@@ -33,7 +39,10 @@ const TestComponentsScreen = () => {
       category: "Sensors", 
       description: "Distance measuring sensor using ultrasonic waves",
       price: 120.0,
-      availability: "Available"
+      availability: "Available",
+      icon: Eye,
+      color: "from-green-500 to-teal-500",
+      stock: 12
     },
     {
       id: "comp_4",
@@ -41,7 +50,10 @@ const TestComponentsScreen = () => {
       category: "Display",
       description: "Addressable RGB LED strip", 
       price: 300.0,
-      availability: "Available"
+      availability: "Available",
+      icon: Zap,
+      color: "from-pink-500 to-rose-500",
+      stock: 6
     },
     {
       id: "comp_5",
@@ -49,7 +61,10 @@ const TestComponentsScreen = () => {
       category: "Microcontrollers",
       description: "WiFi and Bluetooth enabled microcontroller",
       price: 550.0,
-      availability: "Available"
+      availability: "Available",
+      icon: Bluetooth,
+      color: "from-indigo-500 to-blue-600",
+      stock: 10
     }
   ];
 
