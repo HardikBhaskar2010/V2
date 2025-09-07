@@ -150,6 +150,14 @@ export async function initializeSampleComponents() {
 // Get all components
 export async function fetchComponents() {
   try {
+    // First try to return sample components immediately for testing
+    console.log("🔧 Returning sample components for testing");
+    return SAMPLE_COMPONENTS.map((comp, index) => ({
+      ...comp,
+      id: `comp_${index + 1}`
+    }));
+    
+    /* Firebase integration - temporarily disabled for testing
     const snap = await getDocs(collection(db, "components"));
     const components = snap.docs.map((doc) => ({ 
       id: doc.id, 
@@ -165,6 +173,7 @@ export async function fetchComponents() {
     }
     
     return components;
+    */
   } catch (error) {
     console.error("Error fetching components:", error);
     // Return sample components as fallback
