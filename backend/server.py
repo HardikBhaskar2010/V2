@@ -480,21 +480,37 @@ async def save_preferences(preferences: UserPreferences):
 @app.get("/api/stats")
 async def get_stats():
     try:
-        # Count ideas and components
-        ideas_ref = db.collection("ideas")
-        components_ref = db.collection("components")
-        
-        ideas_count = len(list(ideas_ref.stream()))
-        components_count = len(list(components_ref.stream()))
-        
-        return {
-            "ideas_generated": ideas_count,
-            "components_available": components_count,
-            "projects_completed": 0,  # This could be tracked separately
-            "favorite_ideas": len([doc for doc in ideas_ref.stream() if doc.to_dict().get("is_favorite", False)])
-        }
+        if db:
+            # Count ideas and components
+            ideas_ref = db.collection("ideas")
+            components_ref = db.collection("components")
+            
+            ideas_count = len(list(ideas_ref.stream()))
+            components_count = len(list(components_ref.stream()))
+            
+            return {
+                "ideas_generated": ideas_count,
+                "components_available": components_count,
+                "projects_completed": 0,  # This could be tracked separately
+                "favorite_ideas": len([doc for doc in ideas_ref.stream() if doc.to_dict().get("is_favorite", False)])
+            }
+        else:
+            # Return mock stats
+            return {
+                "ideas_generated": len(MOCK_IDEAS),
+                "components_available": len(MOCK_COMPONENTS),
+                "projects_completed": 0,
+                "favorite_ideas": len([idea for idea in MOCK_IDEAS if idea.get("is_favorite", False)])
+            }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching stats: {str(e)}")
+        print(f"⚠️  Error fetching stats: {e}")
+        # Return default stats
+        return {
+            "ideas_generated": 0,
+            "components_available": len(MOCK_COMPONENTS),
+            "projects_completed": 0,
+            "favorite_ideas": 0
+        }
 
 if __name__ == "__main__":
     import uvicorn
