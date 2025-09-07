@@ -231,27 +231,35 @@ const TestComponentsScreen = ({ onNavigate }) => {
                 </div>
 
                 {/* Action Button */}
-                <button
-                  onClick={() => handleAddToProject(component)}
-                  disabled={isSelected}
-                  className={`w-full py-3 px-4 rounded-lg font-medium text-sm transition-all duration-200 ${
-                    isSelected
-                      ? 'bg-green-900/30 text-green-400 border border-green-500/30 cursor-not-allowed'
-                      : 'bg-blue-600 hover:bg-blue-700 text-white active:scale-95 shadow-lg hover:shadow-blue-500/25'
-                  }`}
-                >
-                  {isSelected ? (
-                    <div className="flex items-center justify-center space-x-2">
-                      <Check className="h-4 w-4" />
-                      <span>Added to Project</span>
+                {isSelected ? (
+                  <div className="space-y-2">
+                    <div className="w-full py-3 px-4 rounded-lg bg-green-900/30 text-green-400 border border-green-500/30">
+                      <div className="flex items-center justify-center space-x-2">
+                        <Check className="h-4 w-4" />
+                        <span>Added to Project</span>
+                      </div>
                     </div>
-                  ) : (
+                    <button
+                      onClick={() => handleRemoveFromProject(component)}
+                      className="w-full py-2 px-4 rounded-lg font-medium text-sm bg-red-900/30 text-red-400 border border-red-500/30 hover:bg-red-900/50 transition-all duration-200 active:scale-95"
+                    >
+                      <div className="flex items-center justify-center space-x-2">
+                        <span>×</span>
+                        <span>Remove</span>
+                      </div>
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => handleAddToProject(component)}
+                    className="w-full py-3 px-4 rounded-lg font-medium text-sm bg-blue-600 hover:bg-blue-700 text-white active:scale-95 shadow-lg hover:shadow-blue-500/25 transition-all duration-200"
+                  >
                     <div className="flex items-center justify-center space-x-2">
                       <Plus className="h-4 w-4" />
                       <span>Add to Project</span>
                     </div>
-                  )}
-                </button>
+                  </button>
+                )}
               </div>
             );
           })}
