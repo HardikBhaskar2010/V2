@@ -3,12 +3,16 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
 import os
+from dotenv import load_dotenv
 import openai
 import firebase_admin
 from firebase_admin import credentials, firestore
 import uuid
 from datetime import datetime
 import json
+
+# Load environment variables
+load_dotenv()
 
 # Initialize FastAPI app
 app = FastAPI(title="Atal Idea Generator API", version="1.0.0")
