@@ -77,7 +77,7 @@ const OnboardingFlow = () => {
     // Check if user has completed onboarding
     const hasCompletedOnboarding = localStorage.getItem('onboardingCompleted');
     if (hasCompletedOnboarding) {
-      navigate('/component-selection');
+      navigate('/components');
     }
   }, [navigate]);
 
