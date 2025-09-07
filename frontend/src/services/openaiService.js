@@ -333,6 +333,33 @@ Return only valid JSON.`;
 
 export async function getProjectSuggestions(userPreferences) {
   try {
+    // Initialize OpenAI if not already done
+    if (!openai) {
+      initializeOpenAI();
+    }
+
+    // If still no OpenAI client, return fallback suggestions
+    if (!openai) {
+      console.log('🔄 Using fallback suggestions (OpenAI not available)');
+      return [
+        {
+          title: "IoT Weather Station",
+          description: "Build a comprehensive weather monitoring system with multiple sensors",
+          requiredComponents: ["ESP32 DevKit", "Temperature Sensor", "Humidity Sensor", "Display"]
+        },
+        {
+          title: "Smart Garden Monitor",
+          description: "Automated plant care system with soil moisture and light monitoring",
+          requiredComponents: ["Arduino Uno", "Soil Moisture Sensor", "Light Sensor", "Water Pump"]
+        },
+        {
+          title: "Home Security System",
+          description: "Motion-activated security with alerts and remote monitoring",
+          requiredComponents: ["PIR Motion Sensor", "ESP32 DevKit", "LED Strip", "Buzzer"]
+        }
+      ];
+    }
+
     const { skillLevel, selectedThemes, interests } = userPreferences;
     
     const prompt = `Based on user preferences, suggest 3 trending project ideas:
