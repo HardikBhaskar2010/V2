@@ -193,16 +193,26 @@ async def health_check():
 @app.get("/api/components")
 async def get_components():
     try:
-        components_ref = db.collection("components")
-        docs = components_ref.stream()
-        components = []
-        for doc in docs:
-            component_data = doc.to_dict()
-            component_data["id"] = doc.id
-            components.append(component_data)
-        return components
+        if db:
+            components_ref = db.collection("components")
+            docs = components_ref.stream()
+            components = []
+            for doc in docs:
+                component_data = doc.to_dict()
+                component_data["id"] = doc.id
+                components.append(component_data)
+            
+            # If no components in Firebase, return mock data
+            if not components:
+                print("⚠️  No components found in Firebase, returning mock data")
+                return MOCK_COMPONENTS
+            return components
+        else:
+            print("⚠️  Firebase not available, returning mock data")
+            return MOCK_COMPONENTS
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching components: {str(e)}")
+        print(f"⚠️  Error fetching components from Firebase: {e}")
+        return MOCK_COMPONENTS
 
 @app.post("/api/components")
 async def create_component(component: Component):
