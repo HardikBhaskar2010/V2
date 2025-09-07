@@ -75,8 +75,8 @@ const OnboardingFlow = () => {
 
   useEffect(() => {
     // Check if user has completed onboarding
-    const hasCompletedOnboarding = localStorage.getItem('onboardingCompleted');
-    if (hasCompletedOnboarding) {
+    const hasCompletedOnboarding = localStorage.getItem('onboarding_complete');
+    if (hasCompletedOnboarding === 'true') {
       navigate('/components');
     }
   }, [navigate]);
