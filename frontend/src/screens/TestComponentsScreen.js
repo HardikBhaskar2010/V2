@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { Plus, ShoppingCart, Check, Zap, Cpu, Eye, Bluetooth } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 
 const TestComponentsScreen = () => {
   const [components, setComponents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedComponents, setSelectedComponents] = useState([]);
+  const [showAddModal, setShowAddModal] = useState(false);
 
   // Sample components data
   const sampleComponents = [
