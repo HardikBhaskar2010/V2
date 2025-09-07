@@ -31,8 +31,15 @@ export async function generateProjectIdeas({
   count = 5
 }) {
   try {
-    if (!process.env.REACT_APP_OPENAI_API_KEY) {
-      throw new Error("OpenAI API key not configured");
+    // Initialize OpenAI if not already done
+    if (!openai) {
+      initializeOpenAI();
+    }
+
+    // If still no OpenAI client, return fallback ideas
+    if (!openai) {
+      console.log('🔄 Using fallback project ideas (OpenAI not available)');
+      return generateFallbackIdeas({ selectedComponents, theme, skillLevel, count });
     }
 
     const componentsStr = selectedComponents.join(", ");
