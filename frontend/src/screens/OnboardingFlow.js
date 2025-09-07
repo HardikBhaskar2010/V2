@@ -100,7 +100,7 @@ const OnboardingFlow = () => {
   };
 
   const completeOnboarding = () => {
-    localStorage.setItem('onboardingCompleted', 'true');
+    localStorage.setItem('onboarding_complete', 'true');
     navigate('/components');
   };
 
