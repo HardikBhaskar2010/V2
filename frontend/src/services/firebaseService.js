@@ -150,36 +150,42 @@ export async function initializeSampleComponents() {
 // Get all components
 export async function fetchComponents() {
   try {
-    // First try to return sample components immediately for testing
-    console.log("🔧 Returning sample components for testing");
-    return SAMPLE_COMPONENTS.map((comp, index) => ({
-      ...comp,
-      id: `comp_${index + 1}`
-    }));
+    console.log("🔥 Attempting to fetch components from Firebase...");
     
-    /* Firebase integration - temporarily disabled for testing
+    // Try to fetch from Firebase first
     const snap = await getDocs(collection(db, "components"));
+    console.log(`📊 Found ${snap.size} components in Firebase`);
+    
+    if (snap.empty) {
+      console.log("📝 No components in Firebase, initializing sample components...");
+      await initializeSampleComponents();
+      
+      // Fetch again after initialization
+      const newSnap = await getDocs(collection(db, "components"));
+      const components = newSnap.docs.map((doc) => ({ 
+        id: doc.id, 
+        ...doc.data() 
+      }));
+      console.log(`✅ Initialized and fetched ${components.length} components from Firebase`);
+      return components;
+    }
+    
     const components = snap.docs.map((doc) => ({ 
       id: doc.id, 
       ...doc.data() 
     }));
-    
-    // If no components found, initialize sample components
-    if (components.length === 0) {
-      await initializeSampleComponents();
-      // Fetch again after initialization
-      const newSnap = await getDocs(collection(db, "components"));
-      return newSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-    }
-    
+    console.log(`✅ Successfully fetched ${components.length} components from Firebase`);
     return components;
-    */
+    
   } catch (error) {
-    console.error("Error fetching components:", error);
+    console.error("❌ Error fetching from Firebase:", error);
+    console.log("🔄 Falling back to sample components");
+    
     // Return sample components as fallback
     return SAMPLE_COMPONENTS.map((comp, index) => ({
       ...comp,
-      id: `comp_${index + 1}`
+      id: `comp_${index + 1}`,
+      source: "fallback"
     }));
   }
 }
