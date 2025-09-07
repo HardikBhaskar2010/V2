@@ -57,8 +57,87 @@ except Exception as e:
     print(f"⚠️  Firebase setup error: {e}")
     db = None
 
-# Initialize OpenAI
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Mock data for development when Firebase is not available
+MOCK_COMPONENTS = [
+    {
+        "id": "comp_1",
+        "name": "Arduino Uno",
+        "category": "Microcontrollers",
+        "description": "Popular microcontroller board based on ATmega328P",
+        "price": 450.0,
+        "availability": "Available",
+        "specifications": {
+            "microcontroller": "ATmega328P",
+            "operating_voltage": "5V",
+            "digital_pins": 14,
+            "analog_pins": 6
+        }
+    },
+    {
+        "id": "comp_2",
+        "name": "Servo Motor SG90",
+        "category": "Motors",
+        "description": "Micro servo motor for robotics projects",
+        "price": 150.0,
+        "availability": "Available",
+        "specifications": {
+            "torque": "1.8 kg-cm",
+            "speed": "0.1 sec/60°",
+            "voltage": "4.8V-6V"
+        }
+    },
+    {
+        "id": "comp_3",
+        "name": "Ultrasonic Sensor HC-SR04",
+        "category": "Sensors",
+        "description": "Distance measuring sensor using ultrasonic waves",
+        "price": 120.0,
+        "availability": "Available",
+        "specifications": {
+            "range": "2cm-400cm",
+            "accuracy": "3mm",
+            "voltage": "5V"
+        }
+    },
+    {
+        "id": "comp_4",
+        "name": "LED Strip WS2812B",
+        "category": "Display",
+        "description": "Addressable RGB LED strip",
+        "price": 300.0,
+        "availability": "Available",
+        "specifications": {
+            "leds_per_meter": 60,
+            "voltage": "5V",
+            "power_consumption": "18W/m"
+        }
+    },
+    {
+        "id": "comp_5",
+        "name": "ESP32 DevKit",
+        "category": "Microcontrollers",
+        "description": "WiFi and Bluetooth enabled microcontroller",
+        "price": 550.0,
+        "availability": "Available",
+        "specifications": {
+            "cpu": "Dual-core 240MHz",
+            "memory": "520KB RAM",
+            "wifi": "802.11 b/g/n",
+            "bluetooth": "v4.2 BR/EDR and BLE"
+        }
+    }
+]
+
+MOCK_IDEAS = []
+MOCK_PREFERENCES = {
+    "id": "default_user",
+    "skill_level": "Beginner",
+    "selected_themes": [],
+    "interests": [],
+    "dark_mode_enabled": False,
+    "project_duration": "Short-term",
+    "team_size": "Individual"
+}
 
 # Pydantic models
 class Component(BaseModel):
