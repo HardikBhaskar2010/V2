@@ -24,6 +24,85 @@ const initializeOpenAI = () => {
 // 🤖 AI IDEA GENERATION
 // =============================
 
+// Fallback function when OpenAI is not available
+function generateFallbackIdeas({ selectedComponents, theme, skillLevel, count }) {
+  const fallbackIdeas = [
+    {
+      title: "Smart Home Automation Hub",
+      description: "Control home appliances and monitor sensors remotely using Arduino and ESP32.",
+      problemStatement: "Managing multiple home devices manually is inefficient and energy-wasteful.",
+      workingPrinciple: "ESP32 connects to WiFi and controls relays based on sensor inputs and user commands.",
+      difficulty: skillLevel,
+      estimatedCost: "₹800-1200",
+      components: selectedComponents.length > 0 ? selectedComponents : ["Arduino Uno", "ESP32 DevKit", "Servo Motor SG90"],
+      innovationElements: ["Remote control", "Automated scheduling", "Energy monitoring"],
+      scalabilityOptions: ["Voice control integration", "Mobile app", "Cloud dashboard"],
+      tags: [theme, "IoT", "Home Automation", "Smart Home"]
+    },
+    {
+      title: "Environmental Monitoring Station",
+      description: "Track temperature, humidity, air quality and send alerts when thresholds are exceeded.",
+      problemStatement: "Indoor air quality affects health but is often unmonitored.",
+      workingPrinciple: "Sensors collect environmental data, Arduino processes it and triggers alerts.",
+      difficulty: skillLevel,
+      estimatedCost: "₹600-900",
+      components: selectedComponents.length > 0 ? selectedComponents : ["Arduino Uno", "Ultrasonic Sensor HC-SR04", "LED Strip WS2812B"],
+      innovationElements: ["Real-time monitoring", "Visual alerts", "Data logging"],
+      scalabilityOptions: ["Web dashboard", "Historical data analysis", "Multiple sensor nodes"],
+      tags: [theme, "Environment", "Health", "Monitoring"]
+    },
+    {
+      title: "Automated Plant Care System",
+      description: "Monitor soil moisture and automatically water plants when needed.",
+      problemStatement: "Plants often die due to inconsistent watering schedules.",
+      workingPrinciple: "Soil moisture sensor triggers water pump when moisture drops below threshold.",
+      difficulty: skillLevel,
+      estimatedCost: "₹500-750",
+      components: selectedComponents.length > 0 ? selectedComponents : ["Arduino Uno", "Servo Motor SG90", "PIR Motion Sensor"],
+      innovationElements: ["Automated watering", "Moisture tracking", "Plant health monitoring"],
+      scalabilityOptions: ["Multiple plant monitoring", "Weather integration", "Growth tracking"],
+      tags: [theme, "Agriculture", "Automation", "Gardening"]
+    },
+    {
+      title: "Security Alert System",
+      description: "Motion-activated security system with LED indicators and remote notifications.",
+      problemStatement: "Traditional security systems are expensive and complex to install.",
+      workingPrinciple: "PIR sensor detects motion, triggers LED alerts and can send notifications via ESP32.",
+      difficulty: skillLevel,
+      estimatedCost: "₹400-650",
+      components: selectedComponents.length > 0 ? selectedComponents : ["ESP32 DevKit", "PIR Motion Sensor", "LED Strip WS2812B"],
+      innovationElements: ["Motion detection", "Visual alerts", "Remote notifications"],
+      scalabilityOptions: ["Camera integration", "Mobile alerts", "Multi-zone monitoring"],
+      tags: [theme, "Security", "IoT", "Monitoring"]
+    },
+    {
+      title: "Smart Lighting Controller",
+      description: "Automated lighting system that adjusts brightness based on ambient light and time.",
+      problemStatement: "Manual lighting control wastes energy and isn't convenient.",
+      workingPrinciple: "Light sensors detect ambient conditions and control LED brightness via PWM.",
+      difficulty: skillLevel,
+      estimatedCost: "₹450-700",
+      components: selectedComponents.length > 0 ? selectedComponents : ["Arduino Uno", "LED Strip WS2812B", "Ultrasonic Sensor HC-SR04"],
+      innovationElements: ["Automatic brightness", "Color temperature control", "Energy efficiency"],
+      scalabilityOptions: ["Room-by-room control", "Schedule programming", "Voice control"],
+      tags: [theme, "Smart Home", "Lighting", "Energy"]
+    }
+  ];
+
+  // Return the requested number of ideas
+  const selectedIdeas = fallbackIdeas.slice(0, Math.min(count, fallbackIdeas.length));
+  
+  return selectedIdeas.map((idea, index) => ({
+    ...idea,
+    id: `fallback_idea_${Date.now()}_${index}`,
+    isFavorite: false,
+    createdAt: new Date().toISOString(),
+    generatedBy: "Fallback Generator (OpenAI unavailable)",
+    theme: theme,
+    skillLevel: skillLevel
+  }));
+}
+
 export async function generateProjectIdeas({
   selectedComponents = [],
   theme = "General",
