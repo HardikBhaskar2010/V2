@@ -16,6 +16,9 @@ import AIIdeaGeneration from './screens/AIIdeaGeneration';
 import IdeasLibrary from './screens/IdeasLibrary';
 import UserProfile from './screens/UserProfile';
 
+// Services
+import { apiService } from './services/apiService';
+
 // Import styles
 import './index.css';
 
@@ -36,13 +39,27 @@ function App() {
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
 
   useEffect(() => {
-    // Check if user has completed onboarding
-    const onboardingComplete = localStorage.getItem('onboarding_complete');
-    if (onboardingComplete === 'true') {
-      setHasCompletedOnboarding(true);
-      setCurrentScreen('components');
-    }
-    setIsLoading(false);
+    // Initialize app
+    const initializeApp = async () => {
+      try {
+        // Check if user has completed onboarding
+        const onboardingComplete = localStorage.getItem('onboarding_complete');
+        if (onboardingComplete === 'true') {
+          setHasCompletedOnboarding(true);
+          setCurrentScreen('components');
+        }
+
+        // Initialize sample components if needed
+        await apiService.initializeSampleComponents();
+        
+      } catch (error) {
+        console.error('Error initializing app:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeApp();
   }, []);
 
   const handleOnboardingComplete = () => {
@@ -61,6 +78,7 @@ function App() {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading Atal Idea Generator...</p>
+          <p className="text-sm text-gray-500 mt-2">Initializing Firebase & Components</p>
         </div>
       </div>
     );
