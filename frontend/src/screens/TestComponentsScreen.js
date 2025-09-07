@@ -257,17 +257,43 @@ const TestComponentsScreen = ({ onNavigate }) => {
           })}
         </div>
 
-        {/* Add New Component Button */}
-        <div className="mt-8 text-center">
-          <button
-            onClick={handleAddNewComponent}
-            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium py-4 px-8 rounded-xl shadow-lg hover:shadow-purple-500/25 transition-all duration-200 active:scale-95"
-          >
-            <div className="flex items-center space-x-2">
-              <Plus className="h-5 w-5" />
-              <span>Add New Component</span>
-            </div>
-          </button>
+        {/* Action Buttons */}
+        <div className="mt-8 space-y-4">
+          {/* Add New Component Button */}
+          <div className="text-center">
+            <button
+              onClick={handleAddNewComponent}
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium py-4 px-8 rounded-xl shadow-lg hover:shadow-purple-500/25 transition-all duration-200 active:scale-95"
+            >
+              <div className="flex items-center space-x-2">
+                <Plus className="h-5 w-5" />
+                <span>Add New Component</span>
+              </div>
+            </button>
+          </div>
+
+          {/* Continue Button */}
+          <div className="text-center">
+            <button
+              onClick={handleContinue}
+              disabled={selectedComponents.length === 0}
+              className={`w-full max-w-sm mx-auto font-bold py-4 px-8 rounded-xl shadow-lg transition-all duration-200 active:scale-95 ${
+                selectedComponents.length > 0
+                  ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white shadow-green-500/25'
+                  : 'bg-gray-700 text-gray-400 cursor-not-allowed'
+              }`}
+            >
+              <div className="flex items-center justify-center space-x-2">
+                <span>
+                  {selectedComponents.length > 0 
+                    ? `Continue with ${selectedComponents.length} Component${selectedComponents.length > 1 ? 's' : ''}` 
+                    : 'Select Components to Continue'
+                  }
+                </span>
+                {selectedComponents.length > 0 && <ArrowRight className="h-5 w-5" />}
+              </div>
+            </button>
+          </div>
         </div>
 
         {/* Add New Component Modal */}
