@@ -100,6 +100,15 @@ const TestComponentsScreen = ({ onNavigate }) => {
     toast.success(`${component.name} added to project! 🎉`);
   };
 
+  // Handle removing component from project
+  const handleRemoveFromProject = (component) => {
+    const updatedComponents = selectedComponents.filter(c => c.id !== component.id);
+    setSelectedComponents(updatedComponents);
+    localStorage.setItem('selectedComponents', JSON.stringify(updatedComponents));
+    
+    toast.success(`${component.name} removed from project!`);
+  };
+
   // Handle adding new component
   const handleAddNewComponent = () => {
     setShowAddModal(true);
