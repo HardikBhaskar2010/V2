@@ -69,12 +69,51 @@ const TestComponentsScreen = () => {
   ];
 
   useEffect(() => {
+    // Load selected components from localStorage
+    const savedComponents = localStorage.getItem('selectedComponents');
+    if (savedComponents) {
+      setSelectedComponents(JSON.parse(savedComponents));
+    }
+
     // Simulate loading components
     setTimeout(() => {
       setComponents(sampleComponents);
       setLoading(false);
-    }, 1000);
+    }, 800);
   }, []);
+
+  // Handle adding component to project
+  const handleAddToProject = (component) => {
+    const isAlreadySelected = selectedComponents.some(c => c.id === component.id);
+    
+    if (isAlreadySelected) {
+      toast.error(`${component.name} is already in your project!`);
+      return;
+    }
+
+    const updatedComponents = [...selectedComponents, component];
+    setSelectedComponents(updatedComponents);
+    localStorage.setItem('selectedComponents', JSON.stringify(updatedComponents));
+    
+    toast.success(`${component.name} added to project! 🎉`);
+  };
+
+  // Handle adding new component
+  const handleAddNewComponent = () => {
+    setShowAddModal(true);
+  };
+
+  // Get category color
+  const getCategoryColor = (category) => {
+    const colors = {
+      'Microcontrollers': 'bg-blue-900/20 text-blue-300 border-blue-500/30',
+      'Motors': 'bg-orange-900/20 text-orange-300 border-orange-500/30',
+      'Sensors': 'bg-green-900/20 text-green-300 border-green-500/30',
+      'Display': 'bg-purple-900/20 text-purple-300 border-purple-500/30',
+      'Cables': 'bg-gray-900/20 text-gray-300 border-gray-500/30'
+    };
+    return colors[category] || 'bg-gray-900/20 text-gray-300 border-gray-500/30';
+  };
 
   if (loading) {
     return (
