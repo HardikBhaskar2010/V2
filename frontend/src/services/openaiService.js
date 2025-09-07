@@ -1,10 +1,24 @@
 import OpenAI from 'openai';
 
-// Initialize OpenAI client
-const openai = new OpenAI({
-  apiKey: process.env.REACT_APP_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true // This is needed for client-side usage
-});
+// Initialize OpenAI client only if API key is available
+let openai = null;
+
+const initializeOpenAI = () => {
+  if (process.env.REACT_APP_OPENAI_API_KEY && process.env.REACT_APP_OPENAI_API_KEY !== 'placeholder_key') {
+    try {
+      openai = new OpenAI({
+        apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+        dangerouslyAllowBrowser: true // This is needed for client-side usage
+      });
+      console.log('✅ OpenAI client initialized successfully');
+    } catch (error) {
+      console.warn('⚠️ Failed to initialize OpenAI client:', error);
+      openai = null;
+    }
+  } else {
+    console.log('⚠️ OpenAI API key not found - AI features will use fallback responses');
+  }
+};
 
 // =============================
 // 🤖 AI IDEA GENERATION
